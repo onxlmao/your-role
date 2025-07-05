@@ -8,8 +8,7 @@ import {
 } from "@/components/ui/chart";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { Info, LoaderCircle, Upload } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { LoaderCircle, Upload } from "lucide-react";
 
 // Fungsi untuk menghasilkan nilai acak berbasis Base64
 const getRandomValuesFromImage = (base64String: any, divideBy: number) => {
