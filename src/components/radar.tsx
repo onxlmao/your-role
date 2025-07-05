@@ -291,13 +291,13 @@ export function RadarComponent() {
                 <div className="grid place-content-center text-center space-y-4 py-4">
                   <p>{name}, kamu adalah : </p>
                   <p className="font-bold text-xl">{resultData.category}</p>
-                  <div className="flex gap-4 justify-center w-full *:max-w-[150px] *:grow">
+                  <div className="grid grid-cols-2 gap-4">
                     <div
                       style={{ backgroundImage: `url("${resultData.image}")` }}
                       className="w-full aspect-square bg-cover bg-muted bg-center bg-no-repeat rounded-md"
                     />
                     <div
-                      style={{ backgroundImage: `url("${resultData.image}")` }}
+                      style={{ backgroundImage: `url("${fileUrl}")` }}
                       className="w-full aspect-square bg-cover bg-muted bg-center bg-no-repeat rounded-md"
                     />
                   </div>
@@ -310,7 +310,7 @@ export function RadarComponent() {
             )}
           </>
         ) : (
-          <div className="space-y-4 grid content-center w-full">
+          <div className="space-y-4 w-full">
             <p className="text-2xl capitalize font-bold">
               apa role kamu di facebook
             </p>
