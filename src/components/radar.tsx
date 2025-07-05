@@ -1,4 +1,4 @@
-import '../globals.css'
+import "../globals.css";
 import { useRef, useState } from "react";
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts";
 import {
@@ -126,7 +126,10 @@ export function RadarComponent() {
               img: "./meme/mok.jpeg",
               text: "jomok banget suka kirim stiker orang hitam semoga cepet sadar",
             },
-            { img: "./meme/mok2.jpeg", text: "mau femboy yuri orang hitam sama aja jomok is jomok" },
+            {
+              img: "./meme/mok2.jpeg",
+              text: "mau femboy yuri orang hitam sama aja jomok is jomok",
+            },
           ],
         },
         {
@@ -145,7 +148,10 @@ export function RadarComponent() {
           value: values[5],
           text: [
             { img: "./meme/rasis.jpeg", text: "saiba momoi" },
-            { img: "./meme/rasis2.jpeg", text: "orang yang suka ngomong n-word" },
+            {
+              img: "./meme/rasis2.jpeg",
+              text: "orang yang suka ngomong n-word",
+            },
           ],
         },
         {
@@ -244,29 +250,28 @@ export function RadarComponent() {
     setResultData({});
   }
   return (
-    <div className="pt-4">
+    <div className="pt-4 bg-background p-4 rounded-md">
       <div
-        className={`space-y-8 ${
-          chartData.length > 0 && "grid sm:grid-cols-2 place-content-center"
-        }`}
+        className={`space-y-8 ${chartData.length > 0 && " max-w-xs mx-auto"}`}
       >
         {chartData.length > 0 ? (
           <>
-            <div className="space-y-4 grid place-content-center">
-              <p className="text-lg font-bold uppercase">{name}</p>
-              <div
-                className="min-w-60 aspect-square bg-cover bg-center bg-no-repeat border rounded-md"
-                style={{ backgroundImage: `url("${fileUrl}")` }}
-              />
-            </div>
-
             {loading ? (
-              <div className="w-full h-full flex items-center justify-center gap-4 border-t-2 sm:border-t-0 sm:border-s-2">
-                <LoaderCircle className="animate-spin" />
-                <span>loading boongan</span>
-              </div>
+              <>
+                <div className="space-y-4 grid place-content-center">
+                  <p className="text-lg font-bold uppercase">{name}</p>
+                  <div
+                    className="min-w-60 aspect-square bg-cover bg-center bg-no-repeat border rounded-md"
+                    style={{ backgroundImage: `url("${fileUrl}")` }}
+                  />
+                </div>
+                <div className="w-full h-full flex items-center justify-center gap-4 sm:border-t-0 sm:border-s-2">
+                  <LoaderCircle className="animate-spin" />
+                  <span>loading boongan</span>
+                </div>
+              </>
             ) : (
-              <div className="grid justify-center w-full border-t-2 sm:border-t-0 sm:border-s-2">
+              <div className="grid justify-center w-full">
                 <ChartContainer config={chartConfig} className=" aspect-square">
                   <RadarChart data={chartData} startAngle={45}>
                     <ChartTooltip
@@ -284,14 +289,20 @@ export function RadarComponent() {
                     />
                   </RadarChart>
                 </ChartContainer>
-                <div className="grid place-content-center text-center space-y-4 py-4 border-t-2">
+                <div className="grid place-content-center text-center space-y-4 py-4">
                   <p>{name}, kamu adalah : </p>
                   <p className="font-bold text-xl">{resultData.category}</p>
-                  <div
-                    style={{ backgroundImage: `url("${resultData.image}")` }}
-                    className="min-w-60 rounded-md bg-center bg-contain bg-no-repeat aspect-square"
-                  />
-                  <p>{resultData.text}</p>
+                  <div className="flex gap-4 justify-center w-full *:max-w-[150px] *:grow">
+                    <div
+                      style={{ backgroundImage: `url("${resultData.image}")` }}
+                      className="w-full aspect-square bg-cover bg-muted bg-center bg-no-repeat rounded-md"
+                    />
+                    <div
+                      style={{ backgroundImage: `url("${resultData.image}")` }}
+                      className="w-full aspect-square bg-cover bg-muted bg-center bg-no-repeat rounded-md"
+                    />
+                  </div>
+                  <p className="font-bold">"{resultData.text}"</p>
                 </div>
                 <Button className="w-full mt-4" onClick={reset}>
                   kembali
@@ -309,7 +320,7 @@ export function RadarComponent() {
               <Input
                 className=" transition-all"
                 value={name}
-                placeholder="masukkan nama"
+                placeholder="username"
                 onChange={(e) => setname(e.target.value)}
               />
             </div>
@@ -322,22 +333,7 @@ export function RadarComponent() {
             />
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <label>foto kamu</label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Info size={16} />
-                  </PopoverTrigger>
-                  <PopoverContent
-                    side="left"
-                    className="w-60 sm:max-w-screen-sm"
-                  >
-                    <p>
-                      kalo gak mau pake foto asli pake foto profil aja ga
-                      apa-apa sih. foto cuma di pake di sisi klien & gak akan di
-                      upload
-                    </p>
-                  </PopoverContent>
-                </Popover>
+                <label>foto profil</label>
               </div>
 
               <Button
@@ -348,6 +344,9 @@ export function RadarComponent() {
               >
                 <Upload />
               </Button>
+              <p className="text-xs text-muted-foreground text-center">
+                jangan pernah memasukkan data-data sensitif ke web mencurigakan kayak web ini
+              </p>
             </div>
           </div>
         )}
