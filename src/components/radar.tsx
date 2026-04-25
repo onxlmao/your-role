@@ -1,5 +1,5 @@
 import "../globals.css";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts";
 import {
   ChartContainer,
@@ -59,8 +59,25 @@ export function RadarComponent() {
   const [name, setname] = useState("");
   const [loading, setloading] = useState(false);
   const [resultData, setResultData]: any = useState({});
+
+  // Cleanup object URL on component unmount to prevent memory leak
+  useEffect(() => {
+    return () => {
+      if (fileUrl) {
+        URL.revokeObjectURL(fileUrl);
+      }
+    };
+  }, [fileUrl]);
+
   const handleImageUpload = (event: any) => {
-    const file = event.target.files[0];
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Revoke previous object URL to prevent memory leak
+    if (fileUrl) {
+      URL.revokeObjectURL(fileUrl);
+    }
+
     setfileUrl(URL.createObjectURL(file));
     const reader = new FileReader();
 
@@ -205,12 +222,14 @@ export function RadarComponent() {
       setChartData(newChartData);
 
       setResultData(() => {
-        const top = sortChartDataByValue(newChartData)[0];
-        console.log(top);
+        const sorted = sortChartDataByValue(newChartData);
+        const top = sorted[0];
+        // Pick the same element for text and image to keep them consistent
+        const selected = getRandomElementFromArray(top.text);
         return {
           category: top.category,
-          text: getRandomElementFromArray(top.text).text,
-          image: getRandomElementFromArray(top.text).img,
+          text: selected.text,
+          image: selected.img,
         };
       });
     };
@@ -221,8 +240,8 @@ export function RadarComponent() {
   };
 
   const chartConfig = {
-    desktop: {
-      label: "Desktop",
+    score: {
+      label: "Score",
       color: "hsl(var(--chart-1))",
     },
   };
@@ -231,7 +250,8 @@ export function RadarComponent() {
   };
 
   function sortChartDataByValue(chartData: any) {
-    return chartData.sort(
+    // Create a copy to avoid mutating the original array (React state)
+    return [...chartData].sort(
       (a: { value: number }, b: { value: number }) => b.value - a.value
     );
   }
@@ -243,10 +263,18 @@ export function RadarComponent() {
   }
 
   function reset() {
+    // Revoke object URL to prevent memory leak
+    if (fileUrl) {
+      URL.revokeObjectURL(fileUrl);
+    }
     setChartData([]);
     setfileUrl("");
     setname("");
     setResultData({});
+    // Reset file input so the same file can be re-selected
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   }
   return (
     <div className="pt-4 bg-background p-4 rounded-md">
